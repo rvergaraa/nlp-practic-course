@@ -19,8 +19,6 @@ graph LR
     B --> C(Stop Words / Puntuación)
     C --> D(Lematización)
     D --> E["Texto Limpio (Lista de Lemas)"]
-    style A fill:#e1bee7,stroke:#4a148c,stroke-width:2px
-    style E fill:#c5cae9,stroke:#1a237e,stroke-width:2px
 ```
 
 **Ejemplo en Código:**
