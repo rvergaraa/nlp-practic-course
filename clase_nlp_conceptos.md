@@ -75,6 +75,17 @@ A veces una sola palabra no basta. "Nueva York" no es lo mismo que "Nueva" y "Yo
 
 Podemos configurar `CountVectorizer(ngram_range=(1, 2))` para capturar pares de palabras.
 
+**Ejemplo en Código:**
+```python
+from sklearn.feature_extraction.text import CountVectorizer
+corpus = ["el gato corre"]
+# ngram_range=(1, 2) captura unigramas y bigramas
+vectorizer = CountVectorizer(ngram_range=(1, 2))
+X = vectorizer.fit_transform(corpus)
+print(vectorizer.get_feature_names_out())
+# Salida: ['corre', 'el', 'el gato', 'gato', 'gato corre']
+```
+
 > [!TIP]
 > **Aplicación Real**: Los N-grams son vitales para la predicción de texto (autocompletar) y para detectar frases hechas o nombres compuestos.
 
@@ -83,6 +94,22 @@ Mejora el BoW ajustando el peso de las palabras.
 *   **TF (Frecuencia de Término)**: Cuántas veces aparece la palabra en el documento actual.
 *   **IDF (Frecuencia Inversa de Documento)**: Penaliza las palabras que aparecen en *muchos* documentos (son menos informativas).
 *   **Resultado**: Las palabras que son frecuentes en un documento pero raras en el resto del corpus tienen mayor peso (son más distintivas).
+
+**Ejemplo en Código:**
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+corpus = [
+    "el gato corre",
+    "el perro corre",
+    "el gato duerme"
+]
+tfidf = TfidfVectorizer()
+X = tfidf.fit_transform(corpus)
+# Palabras comunes como "el" tendrán pesos bajos (IDF bajo)
+# Palabras únicas como "duerme" tendrán pesos altos
+print(tfidf.get_feature_names_out())
+print(X.toarray())
+```
 
 ## 3. Similitud Coseno
 
@@ -123,6 +150,16 @@ graph LR
     M[Matriz Documento-Término] --> U[U: Documento-Concepto]
     M --> S[S: Fuerza del Concepto]
     M --> V[V: Concepto-Término]
+```
+
+**Ejemplo en Código:**
+```python
+from sklearn.decomposition import TruncatedSVD
+# Supongamos que X es nuestra matriz TF-IDF
+lsa = TruncatedSVD(n_components=2) # Reducir a 2 conceptos latentes
+X_lsa = lsa.fit_transform(X)
+print(f"Dimensiones originales: {X.shape}")
+print(f"Dimensiones reducidas: {X_lsa.shape}")
 ```
 
 ## 5. Word Embeddings (Incrustaciones de Palabras)
