@@ -19,8 +19,8 @@ graph LR
     B --> C(Stop Words / Puntuación)
     C --> D(Lematización)
     D --> E["Texto Limpio (Lista de Lemas)"]
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style E fill:#ccf,stroke:#333,stroke-width:2px
+    style A fill:#e1bee7,stroke:#4a148c,stroke-width:2px
+    style E fill:#c5cae9,stroke:#1a237e,stroke-width:2px
 ```
 
 **Ejemplo en Código:**
@@ -95,8 +95,8 @@ Usamos la **Similitud Coseno**, que mide el ángulo entre dos vectores.
 graph TD
     O((0,0)) --> A(Vector A)
     O --> B(Vector B)
-    linkStyle 0 stroke:blue,stroke-width:4px
-    linkStyle 1 stroke:red,stroke-width:4px
+    linkStyle 0 stroke:#1565c0,stroke-width:4px
+    linkStyle 1 stroke:#c62828,stroke-width:4px
     A -.->|Ángulo Theta| B
 ```
 
@@ -139,12 +139,12 @@ A diferencia de BoW o TF-IDF que tratan las palabras como unidades discretas, lo
 graph TD
     A(Rey) --- B(Reina)
     C(Hombre) --- D(Mujer)
-    style A fill:#f96
-    style B fill:#f96
-    style C fill:#69f
-    style D fill:#69f
-    linkStyle 0 stroke-width:2px,fill:none,stroke:gray
-    linkStyle 1 stroke-width:2px,fill:none,stroke:gray
+    style A fill:#ffcc80,stroke:#e65100
+    style B fill:#ffcc80,stroke:#e65100
+    style C fill:#90caf9,stroke:#0d47a1
+    style D fill:#90caf9,stroke:#0d47a1
+    linkStyle 0 stroke-width:2px,fill:none,stroke:#546e7a
+    linkStyle 1 stroke-width:2px,fill:none,stroke:#546e7a
 ```
 
 En la práctica, usamos modelos pre-entrenados de SpaCy (como `es_core_news_md`) que ya "saben" qué palabras se parecen entre sí.
