@@ -8,9 +8,10 @@ Antes de que un algoritmo pueda trabajar con texto, este debe ser limpiado y est
 
 ### Conceptos Clave:
 *   **Tokenización**: Dividir el texto en unidades más pequeñas llamadas *tokens* (palabras, signos de puntuación).
-*   **Lematización (`lemma_`)**: Reducir una palabra a su forma base o raíz (ej: "corriendo" -> "correr", "estudiando" -> "estudiar"). Esto ayuda a agrupar diferentes formas de la misma palabra.
+*   **Lematización (`lemma_`)**: Reducir una palabra a su forma base o raíz (ej: "corriendo" -> "correr", "estudiando" -> "estudiar"). Esto ayuda a agrupar diferentes formas de la misma palabra. A diferencia de **stemming**, la lematización tiene en cuenta el significado semántico de las palabras.
 *   **Part-of-Speech (POS) Tagging (`pos_`)**: Identificar la categoría gramatical de cada token (sustantivo, verbo, adjetivo, etc.).
-*   **Stop Words**: Palabras muy comunes (como "el", "de", "y") que generalmente no aportan mucho significado semántico para el análisis de temas y se suelen eliminar.
+*   **Stop Words**: Palabras muy comunes (como "el", "de", "y") que generalmente no aportan mucho significado semántico para el análisis de temas y se suelen eliminar. ¿Cuando sería
+útil eliminar stop words y cuando no? (Pista: cuando se quiera analizar temas, eliminar stop words es útil, para modelos modernos como GPT no es tan relevante)
 
 **Ejemplo de flujo:**
 ```mermaid
@@ -40,6 +41,30 @@ SpaCy también puede identificar entidades del mundo real como personas, organiz
 *   **Reino Unido**: GPE (Geopolítico)
 *   **mil millones de dólares**: MONEY (Dinero)
 
+**Ejemplo en Código:**
+```python
+import spacy
+
+# Cargar el modelo en español
+nlp = spacy.load("es_core_news_sm")
+
+texto = "Hola, soy Ana García. Compré una Dell XPS en Falabella Santiago el viernes pasado por 1200 dólares."
+doc = nlp(texto)
+
+# Imprimir las entidades detectadas y su etiqueta
+print(f"{'TEXTO':<15} | {'ETIQUETA':<10} | {'EXPLICACIÓN'}")
+print("-" * 45)
+
+for ent in doc.ents:
+    # ent.text es la palabra, ent.label_ es la categoría
+    # spacy.explain te dice qué significa la etiqueta (ej: ORG -> Companies, agencies...)
+    print(f"{ent.text:<15} | {ent.label_:<10} | {spacy.explain(ent.label_)}")
+```
+**Enrutamiento inteligente**: Si detectas ORG: Falabella y LOC: Santiago, rediriges al ticket al departamento de ventas.
+
+> [!IMPORTANT]
+> Los modelos pre-entrenados no son perfectos. Es probable que "Dell XPS" lo marque a veces como Organización y no como Producto. En la industria, a menudo se hace un "fine-tuning" (reentrenamiento) para que reconozca los productos específicos de tu empresa.
+
 > [!TIP]
 > **Aplicación Real**: NER se usa para extraer información automática de noticias, clasificar tickets de soporte o anonimizar documentos legales.
 
@@ -66,6 +91,12 @@ vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(corpus)
 print(X.toarray()) # [[1, 1, 0], [1, 0, 1]] (orden alfabético: corre, gato, perro)
 ```
+
+> [!TIP]
+> **Aplicación Real**: BoW se usa para clasificar documentos, detectar spam o para la búsqueda de texto.
+
+> [!IMPORTANT]
+> **Limitaciones**: No captura el contexto ni la importancia relativa de las palabras. Por ejemplo, "gato" y "perro" son tratados de manera similar, aunque su significado es diferente.
 
 ### N-Grams: El contexto importa
 A veces una sola palabra no basta. "Nueva York" no es lo mismo que "Nueva" y "York" por separado.
@@ -138,6 +169,9 @@ print(f"Similitud: {sim[0][0]:.2f}")
 
 > [!TIP]
 > **Aplicación Real**: Motores de recomendación (Netflix recomendando películas por descripción), detección de plagio y búsqueda semántica.
+
+> [!IMPORTANT]
+> **Por qué no calcular la distancia Euclideana**: La distancia Euclideana mide la distancia entre dos puntos en un espacio. En el caso de los vectores, la distancia Euclideana mide la distancia entre dos puntos en un espacio. Sin embargo, en el caso de los vectores, la distancia Euclideana no es una medida de similitud, sino de distancia.
 
 ## 4. Reducción de Dimensionalidad: LSA (Latent Semantic Analysis)
 
